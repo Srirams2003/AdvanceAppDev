@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Container, Typography, Box, Grid } from '@mui/material';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate hook
+import { useNavigate } from 'react-router-dom'; 
 
 const FirstPage = () => {
   const navigate = useNavigate(); 
@@ -11,6 +11,9 @@ const FirstPage = () => {
 
   const handleSignupClick = () => {
     navigate('/signup');
+  };
+  const handleAdmin = () => {
+    navigate('/admin');
   };
 
   return (
@@ -44,7 +47,10 @@ const FirstPage = () => {
                 <Button onClick={handleLoginClick} variant="contained" color="primary" size="large" sx={{ width: '150px', height: '60px', marginBottom: '30px',marginTop: '50px',borderRadius:'15px' }}>Login</Button>
                 </div>
                 <div>
-                <Button onClick={handleSignupClick} variant="contained" color="primary" size="large" sx={{ width: '150px', height: '60px', marginTop: '30px',borderRadius:'15px' }}>Signup</Button>
+                <Button onClick={handleSignupClick} variant="contained" color="primary" size="large" sx={{ width: '150px', height: '60px', marginTop: '30px',marginBottom: '30px',borderRadius:'15px' }}>Signup</Button>
+                </div>
+                <div>
+                <Button onClick={handleAdmin} variant="contained" color="primary" size="large" sx={{ width: '150px', height: '60px', marginTop: '30px',borderRadius:'15px' }}>Admin</Button>
                 </div>
                 </center>
                 </Box>
