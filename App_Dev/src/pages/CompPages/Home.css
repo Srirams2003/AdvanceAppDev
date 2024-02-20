@@ -1,0 +1,32 @@
+/* HomePage.css */
+.home-page {
+    height: 100vh;
+    overflow-y: auto;
+  }
+  
+  .content {
+    background-image: url("https://t4.ftcdn.net/jpg/05/84/31/57/360_F_584315730_hlgzu4Lzr8OtQgU0QerDDSroKtFqbRCf.jpg");
+    background-size: cover;
+    background-position: center;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .arrow-container {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  
+  .fade-enter {
+    opacity: 0;
+  }
+  
+  .fade-enter-active {
+    opacity: 1;
+    transition: opacity 500ms ease-in-out;
+  }
+  
