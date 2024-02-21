@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import { AppBar, Toolbar, Typography, Grid, Card, CardContent, CardMedia, IconButton, Dialog, DialogContent } from '@mui/material';
 import { InfoOutlined } from '@mui/icons-material';
+import BottomNavigationBar from '../BottomNavBar'; 
+
 
 const BookingHome = () => {
     const [openDialog, setOpenDialog] = useState(false);
     const [selectedService, setSelectedService] = useState(null);
 
     const services = [
-        { name: 'Cruising houseboats', image: 'https://cruiseland.in/wp-content/uploads/2019/03/backwatercruise6.jpg', description: 'Explore the waterways with our luxurious cruising houseboats.' },
+        { name: 'Cruising houseboats', image: 'https://cruiseland.in/wp-content/uploads/2019/03/backwatercruise6.jpg', description: '' },
         { name: 'Non-cruising houseboats', image: 'https://getmyboat-user-images1.imgix.net/images/5f524110e004c/boat-rentals-closter-new-jersey-chris-craft-roamer-processed.jpg', description: 'Enjoy a peaceful stay on the water in our non-cruising houseboats.' },
         { name: 'Canal-style houseboats', image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/Bugsworth_058069.jpg/1200px-Bugsworth_058069.jpg', description: 'Experience the charm of canal living in our traditional houseboats.' },
         { name: 'Catamaran-style houseboats', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRgraiFM4VUbfIVtTzsta-3pf4GVcN_teTmxA&usqp=CAU', description: 'Sail smoothly through the waters in our spacious catamaran-style houseboats.' },
@@ -24,9 +26,11 @@ const BookingHome = () => {
     };
 
     return (
+        <>
         <div className="booking-home">
-            <AppBar position="static"style={{height:'85px'}}>
+            <AppBar position="static"style={{height:'85px',alignItems:'center'}}>
                 <Toolbar>
+
                     <Typography variant="h6" style={{fontFamily:'cursive',fontWeight:'bolder'}}>Dine, dance, and watch the sunset at The Sea Shell - book your table now!</Typography>
                 </Toolbar>
             </AppBar>
@@ -63,6 +67,8 @@ const BookingHome = () => {
                 </DialogContent>
             </Dialog>
         </div>
+        <BottomNavigationBar/>
+        </>
     );
 };
 

@@ -189,10 +189,7 @@ const LoginPage = () => {
           >
             {loading ? 'Logging in...' : 'Login'}
           </Button>
-          
-          
-
-                <Button
+          <Button
                   variant="contained"
                   color="primary"
                   onClick={handleGoogleSignIn}
