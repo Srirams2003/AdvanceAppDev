@@ -1,15 +1,14 @@
-import { Grid, Paper, IconButton, Typography } from '@mui/material';
+import { Grid, Paper, IconButton } from '@mui/material';
 import boat from '../Images/boat.jpg';
 import { Link } from 'react-router-dom';
 import { Button } from '@mui/material';
 import { ArrowUpward } from '@mui/icons-material';
-import BottomNavigationBar from '../BottomNavBar'; 
 
 const Second = () => {
   
 
   return (
-    <>
+    
     <Grid container spacing={0} style={{ height: '100%' }}>
       <Grid item xs={6}>
         <Paper 
@@ -87,8 +86,7 @@ const Second = () => {
         </Paper>
       </Grid>
     </Grid>
-    <BottomNavigationBar/>
-    </>
+   
   );
 };
 

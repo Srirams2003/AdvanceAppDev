@@ -1,4 +1,3 @@
-import React from 'react';
 import { Button, Container, Typography, Box, Grid } from '@mui/material';
 import { useNavigate } from 'react-router-dom'; 
 import BgImage from '../Images/Logo.jpg';
@@ -14,9 +13,7 @@ const FirstPage = () => {
     navigate('/signup');
   };
   
-  const handleAdmin = () => {
-    navigate('/admin');
-  };
+ 
 
   return (
     <Grid container style={{ height: '100vh' }}>
