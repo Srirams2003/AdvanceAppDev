@@ -6,13 +6,19 @@ import './App.css';
 const LoginPage = React.lazy(() => import('./pages/Reg/Login'));
 const SignupPage = React.lazy(() => import('./pages/Reg/Signup'));
 const FirstPage = React.lazy(() => import('./pages/Reg/FirstPage')); 
-const AdminLogin = React.lazy(() => import('./pages/AdminPages/AdminLogin'));
+const AdminLogin = React.lazy(() => import('./pages/AdminPages/AdminDashboard.jsx'));
 const HomePage = React.lazy(() => import('./pages/CompPages/HomePage'));
 const Second = React.lazy(() => import('./pages/CompPages/Second'));
 const BookingHome = React.lazy(() => import('./pages/BookingPages/HomeBooking'));
 const BookingForm = React.lazy(() => import('./pages/BookingPages/BookingForm'));
 const Profile = React.lazy(() => import('./pages/CompPages/Profile'));
 const Special = React.lazy(() => import('./pages/DummyFrontPages/SpecialFeatures'));
+const Contact = React.lazy(() => import('./pages/DummyFrontPages/Contact'));
+const Payment = React.lazy(() => import('./pages/BookingPages/Payments.jsx'));
+const BookingHistory = React.lazy(() => import('./pages/BookingPages/BookingHistory.jsx'));
+const AdminHome = React.lazy(() => import('./pages/AdminPages/AdminHome.jsx'));
+const AdminDashboard = React.lazy(() => import('./pages/AdminPages/AdminDashboard.jsx'));
+const UserDetails = React.lazy(() => import('./pages/AdminPages/UserDeatils.jsx'));
 
 import UserLayout from './pages/CompPages/UserLayout';
 
@@ -27,6 +33,12 @@ const UserRoutes = () => {
     <Route path="/bookingform" element={<Suspense fallback={<div>Loading...</div>}><BookingForm /></Suspense>}/>
     <Route path="/profile" element={<Suspense fallback={<div>Loading...</div>}><Profile /></Suspense>}/>
     <Route path="/special" element={<Suspense fallback={<div>Loading...</div>}><Special /></Suspense>}/>
+    <Route path="/contact" element={<Suspense fallback={<div>Loading...</div>}><Contact /></Suspense>}/>
+    <Route path="/payment" element={<Suspense fallback={<div>Loading...</div>}><Payment /></Suspense>}/>
+    <Route path="/bookinghistory" element={<Suspense fallback={<div>Loading...</div>}><BookingHistory /></Suspense>}/>
+    <Route path="/adminhome" element={<Suspense fallback={<div>Loading...</div>}><AdminHome /></Suspense>}/>
+    <Route path="/admindashboard" element={<Suspense fallback={<div>Loading...</div>}><AdminDashboard /></Suspense>}/>
+    <Route path="/users" element={<Suspense fallback={<div>Loading...</div>}><UserDetails /></Suspense>}/>
     </Routes>
     </UserLayout>
     )
@@ -46,6 +58,12 @@ function App() {
           <Route path="/bookingform" element={<Suspense fallback={<div>Loading...</div>}><BookingForm/></Suspense>} />
           <Route path="/profile" element={<Suspense fallback={<div>Loading...</div>}><Profile/></Suspense>} />
           <Route path="/special" element={<Suspense fallback={<div>Loading...</div>}><Special/></Suspense>} />
+          <Route path="/contact" element={<Suspense fallback={<div>Loading...</div>}><Contact/></Suspense>} />
+          <Route path="/payment" element={<Suspense fallback={<div>Loading...</div>}><Payment/></Suspense>} />
+          <Route path="/bookinghistory" element={<Suspense fallback={<div>Loading...</div>}><BookingHistory/></Suspense>} />
+          <Route path="/adminhome" element={<Suspense fallback={<div>Loading...</div>}><AdminHome/></Suspense>} />
+          <Route path="/admindashboard" element={<Suspense fallback={<div>Loading...</div>}><AdminDashboard/></Suspense>} />
+          <Route path="/users" element={<Suspense fallback={<div>Loading...</div>}><UserDetails/></Suspense>} />
           <Route path="/user/*" element={<UserRoutes/>}/>
         </Routes>
       </div>

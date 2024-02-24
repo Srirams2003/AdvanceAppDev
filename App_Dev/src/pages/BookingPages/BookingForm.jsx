@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { TextField, Button, MenuItem, Dialog, DialogTitle, DialogContent, DialogActions, Typography } from '@mui/material';
 import BgImage from '../Images/formbg.jpg';
+import { useNavigate } from 'react-router-dom';
 
 const BookingForm = () => {
-    // Define services array
+
     const services = [
         { name: 'Cruising houseboats', price: 7500 },
         { name: 'Non-cruising houseboats', price: 6000 },
@@ -54,6 +55,10 @@ const BookingForm = () => {
     const handleDialogClose = () => {
         setOpenDialog(false);
     };
+    const navigate=useNavigate();
+    const handlePayment=()=>{
+        navigate('/user/payment');
+    }
 
     return (
         <div style={{backgroundImage: `url(${BgImage})`,backgroundSize:'cover',minHeight:'100vh',borderColor:'rgba(0,0,0,5)'}}>
@@ -169,8 +174,8 @@ const BookingForm = () => {
                     <Button onClick={handleDialogClose} color="primary">
                         Close
                     </Button>
-                    <Button variant="contained" color="primary" onClick={() => {}}>
-                        Proceed to Payment
+                    <Button variant="contained" color="primary" onClick={handlePayment}>
+                    Proceed to Payment
                     </Button>
                 </DialogActions>
             </Dialog>

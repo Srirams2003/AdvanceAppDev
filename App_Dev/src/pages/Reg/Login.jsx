@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 // import { Link, useNavigate } from 'react-router-dom';
 
 import {
@@ -189,24 +189,18 @@ const LoginPage = () => {
           >
             {loading ? 'Logging in...' : 'Login'}
           </Button>
-          <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={handleGoogleSignIn}
-                  disabled={loading}
-                  sx={{ marginTop: "16px" }}
-                >
-                <GoogleIcon style={{ marginRight: '8px' }} />
-                  Sign In with Google
-                </Button>
-            
+          
+                <p>Don't have an account? </p>
+                <Link to="/signup">
+                <p>Signup</p>
+              </Link>
         </Box>
       </form>
       {loading && <LinearProgress sx={{ marginTop: '16px' }} />}
     </Paper>
+    
   </Box>
-
-</Box>
+      </Box>
 
     </ThemeProvider>
   );

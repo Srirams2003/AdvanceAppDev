@@ -1,79 +1,144 @@
-import { useState, useEffect } from 'react';
-import Avatar from '@mui/material/Avatar';
-
-import { Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
+import  { useState } from "react";
+import { Avatar, Box, Container, Grid, Typography, Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField, IconButton } from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
+import ProfileImage from '../Images/Prof1.jpg';
+import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
-    const [userData, setUserData] = useState({
-        name: 'Modiji',
-        email: 'modi@gmail.com',
-        profilePicture: 'profile-picture.jpg',
-        contact: '8438564691',
-        address: 'No.5,Anna Nagar,Delhi-01',        
-    });
+  const initialUser = {
+    name: "Sriram",
+    DOB: "November 5, 2003",
+    gender: "Male",
+    email: "sriram@gmail.com",
+    phone: "+918438564691",
+    address: "123 BK Pudhur, London, USA",
+    profilePicture: ProfileImage,
+  };
 
-    const [bookingHistory, setBookingHistory] = useState([
-        { id: 1, date: '2024-02-21', status: 'Confirmed' },
-        { id: 2, date: '2024-03-15', status: 'Pending' },
-    ]);
+  const navigate=useNavigate();
 
-    useEffect(() => {
-        // API CALL PANNANUM
-    }, []);
+  const [openDialog, setOpenDialog] = useState(false);
+  const [user, setUser] = useState(initialUser);
 
-    return (
-        <div style={{ marginTop: '100px', marginLeft: '55px',marginRight:'55px' }}>
-            <center>
-                <Typography variant="h4" gutterBottom style={{ marginBottom: '85px' }}>User Profile</Typography>
-            </center>
-            <div style={{ display: 'flex', justifyContent: 'center', backgroundColor: 'whitesmoke', paddingTop: '25px', paddingBottom: '25px' }}>
-                <div className="profile-picture" style={{ marginRight: '125px' }}>
-                    <center>
-                        <Avatar
-                            alt="Modi ji"
-                            src="https://th.bing.com/th/id/OIP.EWOspfJGuA_VRUDKgfHIiAHaIJ?w=149&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7"
-                            style={{ width: '200px', height: '200px' }}
-                        />
-                    </center>
-                </div>
+  
+  const handleOpenDialog = () => {
+    setOpenDialog(true);
+  };
 
-                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
-                    <Typography variant="h5" gutterBottom style={{ fontSize: '35px' }}>User Information</Typography>
-                    <Typography variant="body1" gutterBottom>Name: {userData.name}</Typography>
-                    <Typography variant="body1" gutterBottom>Email: {userData.email}</Typography>
-                    <Typography variant="body1" gutterBottom>Contact: {userData.contact}</Typography>
-                    <Typography variant="body1" gutterBottom>Address: {userData.address}</Typography>
-                </div>
-            </div>
-            <div style={{ backgroundColor: 'whitesmoke' }}>
-            <br/>
-            <br/>
-            <br/>
-            <br/>
-                <Typography variant="h5" gutterBottom>Booking History</Typography>
-                <TableContainer component={Paper} style={{ backgroundColor: 'whitesmoke' }}>
-                    <Table>
-                        <TableHead>
-                            <TableRow>
-                                <TableCell style={{ fontWeight: 'bold' }}>Booking ID</TableCell>
-                                <TableCell style={{ fontWeight: 'bold' }}>Date</TableCell>
-                                <TableCell style={{ fontWeight: 'bold' }}>Status</TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {bookingHistory.map(booking => (
-                                <TableRow key={booking.id}>
-                                    <TableCell>{booking.id}</TableCell>
-                                    <TableCell>{booking.date}</TableCell>
-                                    <TableCell>{booking.status}</TableCell>
-                                </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-            </div>
-        </div>
-    );
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+  };
+
+  const handleSaveChanges = () => {
+    setOpenDialog(false);
+  };
+  const bookingHistory=()=>{
+    navigate('/user/bookinghistory')
+  }
+
+  return (
+    <Box
+      sx={{
+        backgroundImage: `url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0ZfQ_ktG2SHIqnuDeFtox5guOlar0d8LLvErxsofSf0ELFyyXVGfHAnI9iR9_g99Fnz8&usqp=CAU')`,
+        backgroundRepeat: 'no-repeat',
+        backgroundSize: 'cover',
+        minHeight: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
+    >
+      <Container>
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', textAlign: "center", marginBottom: 6 }}>
+          <Avatar sx={{ width: 150, height: 150, margin: "auto" }} src={user.profilePicture} alt={user.name} />
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Typography variant="h4" sx={{ marginTop: 3 }}>{user.name}</Typography>
+            <IconButton onClick={handleOpenDialog} sx={{ marginTop: 2 }}>
+              <EditIcon />
+            </IconButton>
+          </Box>
+          <Typography variant="subtitle1" sx={{ color: "text.secondary", marginBottom: 2 }}>DOB: {user.DOB}</Typography>
+        </Box>
+        <Grid container spacing={4} justifyContent="center">
+          <Grid item xs={12} sm={6}>
+            <Box sx={{ bgcolor: "background.paper", p: 4, borderRadius: 2 }}>
+              <Typography variant="h6" sx={{ marginBottom: 3, color: "primary.main" }}>Profile Information</Typography>
+              <Typography variant="body1" sx={{ marginBottom: 2 }}><strong>Gender:</strong> {user.gender}</Typography>
+              <Typography variant="body1" sx={{ marginBottom: 2 }}><strong>Email:</strong> {user.email}</Typography>
+              <Typography variant="body1" sx={{ marginBottom: 2 }}><strong>Phone:</strong> {user.phone}</Typography>
+              <Typography variant="body1" sx={{ marginBottom: 2 }}><strong>Address:</strong> {user.address}</Typography>
+              <Button onClick={bookingHistory}>History Booking</Button>
+            </Box>
+          </Grid>
+        </Grid>
+        <Dialog open={openDialog} onClose={handleCloseDialog}>
+          <DialogTitle>Edit Profile</DialogTitle>
+          <DialogContent>
+            <TextField
+              autoFocus
+              margin="dense"
+              id="name"
+              label="Name"
+              type="text"
+              fullWidth
+              value={user.name}
+              onChange={(e) => setUser({ ...user, name: e.target.value })}
+            />
+            <TextField
+              margin="dense"
+              id="dob"
+              label="Date of Birth"
+              type="text"
+              fullWidth
+              value={user.DOB}
+              onChange={(e) => setUser({ ...user, DOB: e.target.value })}
+            />
+            <TextField
+              margin="dense"
+              id="gender"
+              label="Gender"
+              type="text"
+              fullWidth
+              value={user.gender}
+              onChange={(e) => setUser({ ...user, gender: e.target.value })}
+            />
+            <TextField
+              disabled 
+              margin="dense"
+              id="email"
+              label="Email"
+              type="email"
+              fullWidth
+              value={user.email}
+            />
+            <TextField
+              margin="dense"
+              id="phone"
+              label="Phone"
+              type="text"
+              fullWidth
+              value={user.phone}
+              onChange={(e) => setUser({ ...user, phone: e.target.value })}
+            />
+            <TextField
+              margin="dense"
+              id="address"
+              label="Address"
+              type="text"
+              fullWidth
+              value={user.address}
+              onChange={(e) => setUser({ ...user, address: e.target.value })}
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleCloseDialog}>Cancel</Button>
+            <Button onClick={handleSaveChanges} variant="contained">Save</Button>
+          </DialogActions>
+        </Dialog>
+      </Container>
+    </Box>
+  );
 };
 
 export default Profile;

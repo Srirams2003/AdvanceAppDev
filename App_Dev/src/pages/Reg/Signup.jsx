@@ -10,6 +10,7 @@ import {
 } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { getAuth, createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from 'firebase/auth'; 
+import { Link } from 'react-router-dom';
 
 // SVG background
 const svgBackground = (
@@ -200,16 +201,10 @@ const SignupPage = () => {
           >
             {loading ? 'Signing up...' : 'Sign Up'}
           </Button>
-          <Button
-            type="button"
-            variant="contained"
-            color="secondary"
-            onClick={handleSignInWithGoogle}
-            disabled={loading}
-            sx={{ marginTop: '16px' }}
-          >
-            {loading ? 'Signing in with Google...' : 'Sign Up with Google'}
-          </Button>
+          <p>Don't have an account? </p>
+                <Link to="/login">
+                <p>Login</p>
+              </Link>
         </Box>
       </form>
       {loading && <LinearProgress sx={{ marginTop: '16px' }} />}

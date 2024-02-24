@@ -16,19 +16,13 @@ const SpecialFeatures = () => {
         { name: 'Fun-O-Time', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR3kwoDpyfwf3cp38lwvjCDgh2cyKVp_WyBfA&usqp=CAU'}
     ];
 
-    const handleDialogOpen = (service) => {
-        setSelectedService(service);
-        setOpenDialog(true);
-    };
+   
 
     const handleDialogClose = () => {
         setOpenDialog(false);
     };
 
-    const handleBookNow = (service) => {
-        navigate('/user/bookingform');
-        console.log(`Book now clicked for ${service.name}`);
-    };
+    
 
     return (
         <div className="booking-home" >
@@ -47,10 +41,6 @@ const SpecialFeatures = () => {
                             />
                             <CardContent>
                                 <Typography variant="h5">{service.name}</Typography>
-                                <IconButton onClick={() => handleDialogOpen(service)}>
-                                    <InfoOutlined />
-                                </IconButton>
-                                <Button variant="contained" color="primary" onClick={() => handleBookNow(service)}>Book Now</Button>
                             </CardContent>
                         </Card>
                     </Grid>
