@@ -1,26 +1,38 @@
-import  { useState } from "react";
+import { useState, useEffect } from "react";
 import { Avatar, Box, Container, Grid, Typography, Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField, IconButton } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import ProfileImage from '../Images/Prof1.jpg';
 import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
+import DatePicker from '@mui/lab/DatePicker';
 
 const Profile = () => {
-  const initialUser = {
-    name: "Sriram",
-    DOB: "November 5, 2003",
-    gender: "Male",
-    email: "sriram@gmail.com",
-    phone: "+918438564691",
-    address: "123 BK Pudhur, London, USA",
-    profilePicture: ProfileImage,
-  };
-
-  const navigate=useNavigate();
+  const cookie = Cookies.get('email');
+  const navigate = useNavigate();
 
   const [openDialog, setOpenDialog] = useState(false);
-  const [user, setUser] = useState(initialUser);
+  const [user, setUser] = useState(null); // Initially, user details are null
 
-  
+  useEffect(() => {
+    const fetchUserDetails = async () => {
+      try {
+        const response = await fetch(`http://localhost:8080/users/get/${cookie}`); // Adjust the URL
+        if (response.ok) {
+          const userData = await response.json();
+          setUser(userData);
+        } else {
+          console.error('Failed to fetch user details');
+        }
+      } catch (error) {
+        console.error('Error fetching user details:', error.message);
+      }
+    };
+
+    if (cookie) {
+      fetchUserDetails();
+    }
+  }, [cookie]);
+
   const handleOpenDialog = () => {
     setOpenDialog(true);
   };
@@ -29,11 +41,35 @@ const Profile = () => {
     setOpenDialog(false);
   };
 
-  const handleSaveChanges = () => {
-    setOpenDialog(false);
+  const handleSaveChanges = async () => {
+    try {
+      const response = await fetch(`http://localhost:8080/users/put/${user.email}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(user),
+      });
+      if (response.ok) {
+        // Assuming the backend returns the updated user object,
+        // you can update the user state with the response data
+        const updatedUser = await response.json();
+        setUser(updatedUser);
+        setOpenDialog(false);
+      } else {
+        console.error('Failed to update user details');
+      }
+    } catch (error) {
+      console.error('Error updating user details:', error.message);
+    }
   };
-  const bookingHistory=()=>{
-    navigate('/user/bookinghistory')
+
+  const bookingHistory = () => {
+    navigate('/user/bookinghistory');
+  };
+
+  if (!user) {
+    return null; // or you can show a loading spinner
   }
 
   return (
@@ -51,7 +87,7 @@ const Profile = () => {
     >
       <Container>
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', textAlign: "center", marginBottom: 6 }}>
-          <Avatar sx={{ width: 150, height: 150, margin: "auto" }} src={user.profilePicture} alt={user.name} />
+          <Avatar sx={{ width: 150, height: 150, margin: "auto" }} src={ProfileImage} alt={user.name} />
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Typography variant="h4" sx={{ marginTop: 3 }}>{user.name}</Typography>
             <IconButton onClick={handleOpenDialog} sx={{ marginTop: 2 }}>
@@ -88,12 +124,14 @@ const Profile = () => {
             <TextField
               margin="dense"
               id="dob"
-              label="Date of Birth"
-              type="text"
+              type="date"
               fullWidth
               value={user.DOB}
+              max={(new Date()).toISOString().split('T')[0]} 
               onChange={(e) => setUser({ ...user, DOB: e.target.value })}
             />
+
+
             <TextField
               margin="dense"
               id="gender"
@@ -104,7 +142,7 @@ const Profile = () => {
               onChange={(e) => setUser({ ...user, gender: e.target.value })}
             />
             <TextField
-              disabled 
+              disabled
               margin="dense"
               id="email"
               label="Email"

@@ -1,8 +1,7 @@
-import { Grid, Paper, IconButton } from '@mui/material';
+import { Grid, Paper } from '@mui/material';
 import boat from '../Images/boat.jpg';
 import { Link } from 'react-router-dom';
 import { Button } from '@mui/material';
-import { ArrowUpward } from '@mui/icons-material';
 
 const Second = () => {
   
@@ -24,15 +23,7 @@ const Second = () => {
         />
       </Grid>
       <Grid item xs={6}>
-      <Link to="/home">
-        <IconButton 
-          style={{ position: 'absolute', top: '10px', right: '300px', zIndex: '9999' }} 
-          color="primary" 
-          aria-label="scroll-to-top"
-        >
-          <ArrowUpward />
-        </IconButton>
-        </Link>
+      
         
         <Paper 
           style={{ 

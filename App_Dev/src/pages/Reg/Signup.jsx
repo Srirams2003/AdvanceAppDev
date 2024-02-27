@@ -9,8 +9,8 @@ import {
   LinearProgress,
 } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { getAuth, createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from 'firebase/auth'; 
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 // SVG background
 const svgBackground = (
@@ -89,6 +89,7 @@ const theme = createTheme({
 
 const SignupPage = () => {
   const navigate = useNavigate();
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -99,34 +100,29 @@ const SignupPage = () => {
 
   const handleSignUp = async () => {
     if (password !== confirmPassword) {
-        setError("Passwords don't match");
-        return;
-      }
+      setError("Passwords don't match");
+      return;
+    }
     setLoading(true);
     try {
-      const auth = getAuth(); 
-      await createUserWithEmailAndPassword(auth, email, password); 
-      navigate('/login');
+      const response = await axios.post('http://localhost:8080/users/post', { name, email, password });
+  
+      if (response.status === 200) {
+        setError(response.data.message);
+      } else {
+        navigate('/login');
+      }
     } catch (error) {
       console.error('Error signing up:', error.message);
+      setError('Something went wrong. Please try again later.');
     } finally {
       setLoading(false);
     }
   };
+  
+  
 
-  const handleSignInWithGoogle = async () => {
-    setLoading(true);
-    try {
-      const auth = getAuth();
-      const provider = new GoogleAuthProvider();
-      await signInWithPopup(auth, provider);
-      navigate('/home');
-    } catch (error) {
-      console.error('Error signing in with Google:', error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
+  
 
   return (
     <ThemeProvider theme={theme}>
@@ -165,6 +161,14 @@ const SignupPage = () => {
       </Typography>
       <form>
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: '25px' }}>
+          <TextField
+            label="User Name"
+            id="name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            variant="outlined"
+            required
+          />
           <TextField
             label="Email"
             id="email"

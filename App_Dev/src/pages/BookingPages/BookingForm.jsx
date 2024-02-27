@@ -1,187 +1,269 @@
-import { useState } from 'react';
-import { TextField, Button, MenuItem, Dialog, DialogTitle, DialogContent, DialogActions, Typography } from '@mui/material';
-import BgImage from '../Images/formbg.jpg';
-import { useNavigate } from 'react-router-dom';
-
+import { useState } from "react";
+import {
+  TextField,
+  Button,
+  MenuItem,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Typography,
+} from "@mui/material";
+import BgImage from "../Images/formbg.jpg";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+const BASE_URL = "http://localhost:8080";
 const BookingForm = () => {
+  const services = [
+    { name: "Cruising houseboats", price: 7500 },
+    { name: "Non-cruising houseboats", price: 6000 },
+    { name: "Canal-style houseboats", price: 6500 },
+    { name: "Catamaran-style houseboats", price: 11000 },
+    { name: "Pontoon houseboats", price: 15000 },
+  ];
+  const getNextDate = () => {
+    const currentDate = new Date();
+    currentDate.setDate(currentDate.getDate() + 1);
+    const nextDate = currentDate.toISOString().split("T")[0];
+    return nextDate;
+  };
 
-    const services = [
-        { name: 'Cruising houseboats', price: 7500 },
-        { name: 'Non-cruising houseboats', price: 6000 },
-        { name: 'Canal-style houseboats', price: 6500 },
-        { name: 'Catamaran-style houseboats', price: 11000 },
-        { name: 'Pontoon houseboats', price: 15000 }
-    ];
+  const [bookingDetails, setBookingDetails] = useState({
+    name: "",
+    email: "",
+    aadhar: "", // Renamed from aadharNumber
+    phone: "", // Renamed from phoneNumber
+    boatType: "", // Renamed from boathouseType
+    date: "", // Renamed from dateOfBooking
+    noRooms: 1, // Renamed from numberOfRooms
+  });
 
-    // Function to get the next date
-    const getNextDate = () => {
-        const currentDate = new Date();
-        currentDate.setDate(currentDate.getDate() + 1); 
-        const nextDate = currentDate.toISOString().split('T')[0]; 
-        return nextDate;
-    };
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [openDialog, setOpenDialog] = useState(false);
+  const navigate = useNavigate();
 
-    const [bookingDetails, setBookingDetails] = useState({
-        name: '',
-        email: '',
-        aadharNumber: '',
-        phoneNumber: '',
-        boathouseType: '',
-        dateOfBooking: '', 
-        numberOfRooms: 1, 
-    });
+  const handleFieldChange = (e) => {
+    const { name, value } = e.target;
+    setBookingDetails({ ...bookingDetails, [name]: value });
+  };
 
-    const [totalPrice, setTotalPrice] = useState(0);
-    const [openDialog, setOpenDialog] = useState(false);
-
-    const handleFieldChange = (e) => {
-        const { name, value } = e.target;
-        if (name === 'phoneNumber' && /^[6-9]\d{0,9}$/.test(value) && value.length <= 10) {
-            setBookingDetails({ ...bookingDetails, [name]: value });
-        } else if (name !== 'phoneNumber') {
-            setBookingDetails({ ...bookingDetails, [name]: value });
-        }
-    };
-    
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        const selectedService = services.find(service => service.name === bookingDetails.boathouseType);
-        const totalPrice = selectedService.price * bookingDetails.numberOfRooms;
-        setTotalPrice(totalPrice);
-        setOpenDialog(true);
-    };
-
-    const handleDialogClose = () => {
-        setOpenDialog(false);
-    };
-    const navigate=useNavigate();
-    const handlePayment=()=>{
-        navigate('/user/payment');
-    }
-
-    return (
-        <div style={{backgroundImage: `url(${BgImage})`,backgroundSize:'cover',minHeight:'100vh',borderColor:'rgba(0,0,0,5)'}}>
-        <br/>
-        <br/>
-        <br/>
-        <br/>
-        <br/>
-        <div style={{ maxWidth: '500px', margin: 'auto', backgroundColor: '#f0f0f0', padding: '20px', borderRadius: '10px'}}>
-            <form onSubmit={handleSubmit} >
-                <Typography variant="h5" style={{ fontFamily: 'cursive', fontWeight: 'bold', textAlign: 'center' }}>Booking Form</Typography>
-                <TextField
-                    name="name"
-                    label="Name"
-                    value={bookingDetails.name}
-                    onChange={handleFieldChange}
-                    fullWidth
-                    margin="normal"
-                    required
-                />
-                <TextField
-                    name="email"
-                    label="Email"
-                    type="email"
-                    value={bookingDetails.email}
-                    onChange={handleFieldChange}
-                    fullWidth
-                    margin="normal"
-                    required
-                />
-                <TextField
-                    name="aadharNumber"
-                    label="Aadhar Number"
-                    type="password"
-                    value={bookingDetails.aadharNumber}
-                    onChange={handleFieldChange}
-                    fullWidth
-                    margin="normal"
-                    required
-                />
-                <TextField
-                    name="phoneNumber"
-                    label="Phone Number"
-                    type="tel"
-                    value={bookingDetails.phoneNumber}
-                    onChange={handleFieldChange}
-                    fullWidth
-                    margin="normal"
-                    required
-                />
-                <TextField
-                    name="boathouseType"
-                    select
-                    label="Type of Boathouse"
-                    value={bookingDetails.boathouseType}
-                    onChange={handleFieldChange}
-                    fullWidth
-                    margin="normal"
-                    required
-                >
-                    {services.map((service, index) => (
-                        <MenuItem key={index} value={service.name}>
-                            {service.name}
-                        </MenuItem>
-                    ))}
-                </TextField>
-                <TextField
-                    name="dateOfBooking"
-                    label="Date of Booking"
-                    type="date"
-                    value={bookingDetails.dateOfBooking || getNextDate()} 
-                    onChange={handleFieldChange}
-                    fullWidth
-                    margin="normal"
-                    required
-                    InputLabelProps={{
-                        shrink: true,
-                    }}
-                    inputProps={{
-                        min: getNextDate() 
-                    }}
-                />
-                <TextField
-                    name="numberOfRooms"
-                    label="Number of Rooms"
-                    type="number"
-                    value={bookingDetails.numberOfRooms}
-                    onChange={handleFieldChange}
-                    fullWidth
-                    margin="normal"
-                    required
-                    inputProps={{
-                        min: 1,
-                    }}
-                />
-                <Button type="submit" variant="contained" color="primary" style={{ marginTop: '1rem' }}>
-                    Book Now
-                </Button>
-            </form>
-            <Dialog open={openDialog} onClose={handleDialogClose} style={{letterSpacing:'1px'}}>
-                <DialogTitle>Booking Details</DialogTitle>
-                <DialogContent>
-                    <p><strong>Name:</strong> {bookingDetails.name}</p>
-                    <p><strong>Email:</strong> {bookingDetails.email}</p>
-                    <p><strong>Aadhar Number:</strong> {bookingDetails.aadharNumber}</p>
-                    <p><strong>Phone Number:</strong> {bookingDetails.phoneNumber}</p>
-                    <p><strong>Type of Boathouse:</strong> {bookingDetails.boathouseType}</p>
-                    <p><strong>Date of Booking:</strong> {bookingDetails.dateOfBooking}</p>
-                    <p><strong>Number of Rooms:</strong> {bookingDetails.numberOfRooms}</p>
-                    <p><strong>Total Price:</strong> Rs.{totalPrice}</p>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleDialogClose} color="primary">
-                        Close
-                    </Button>
-                    <Button variant="contained" color="primary" onClick={handlePayment}>
-                    Proceed to Payment
-                    </Button>
-                </DialogActions>
-            </Dialog>
-        </div>
-        </div>
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const selectedService = services.find(
+      (service) => service.name === bookingDetails.boatType
     );
+    const totalPrice = selectedService.price * bookingDetails.noRooms;
+    setTotalPrice(totalPrice);
+    setOpenDialog(true);
+
+    try {
+      console.log("TRY");
+      console.log(bookingDetails.name);
+      console.log(bookingDetails.email);
+      console.log(bookingDetails.aadhar);
+      console.log(bookingDetails.boatType);
+      console.log(bookingDetails.date);
+      console.log(bookingDetails.phone);
+      console.log(bookingDetails.noRooms);
+
+      const response = await axios.post(`${BASE_URL}/bookings/post`, {
+        ...bookingDetails,
+        totalPrice,
+      });
+      if (response.status === 201) {
+        navigate("/user/payment");
+      } else {
+        console.error(
+          "Failed to create booking. Unexpected status:",
+          response.status
+        );
+      }
+    } catch (error) {
+      console.error("Error creating booking:", error.message);
+      console.error("Request details:", error.request);
+      console.error("Response details:", error.response);
+    }
+  };
+
+  const handleDialogClose = () => {
+    setOpenDialog(false);
+  };
+
+  return (
+    <div
+      style={{
+        backgroundImage: `url(${BgImage})`,
+        backgroundSize: "cover",
+        minHeight: "100vh",
+        borderColor: "rgba(0,0,0,5)",
+      }}
+    >
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <div
+        style={{
+          maxWidth: "500px",
+          margin: "auto",
+          backgroundColor: "#f0f0f0",
+          padding: "20px",
+          borderRadius: "10px",
+        }}
+      >
+        <form onSubmit={handleSubmit}>
+          <Typography
+            variant="h5"
+            style={{
+              fontFamily: "cursive",
+              fontWeight: "bold",
+              textAlign: "center",
+            }}
+          >
+            Booking Form
+          </Typography>
+          <TextField
+            name="name"
+            label="Name"
+            value={bookingDetails.name}
+            onChange={handleFieldChange}
+            fullWidth
+            margin="normal"
+            required
+          />
+          <TextField
+            name="email"
+            label="Email"
+            type="email"
+            value={bookingDetails.email}
+            onChange={handleFieldChange}
+            fullWidth
+            margin="normal"
+            required
+          />
+          <TextField
+            name="aadhar"
+            label="Aadhar Number"
+            type="text"
+            value={bookingDetails.aadhar}
+            onChange={handleFieldChange}
+            fullWidth
+            margin="normal"
+            required
+          />
+          <TextField
+            name="phone"
+            label="Phone Number"
+            type="tel"
+            value={bookingDetails.phone}
+            onChange={handleFieldChange}
+            fullWidth
+            margin="normal"
+            required
+          />
+          <TextField
+            name="boatType"
+            select
+            label="Type of Boathouse"
+            value={bookingDetails.boatType}
+            onChange={handleFieldChange}
+            fullWidth
+            margin="normal"
+            required
+          >
+            {services.map((service, index) => (
+              <MenuItem key={index} value={service.name}>
+                {service.name}
+              </MenuItem>
+            ))}
+          </TextField>
+          <TextField
+            name="date"
+            label="Date of Booking"
+            type="date"
+            value={bookingDetails.date || getNextDate()}
+            onChange={handleFieldChange}
+            fullWidth
+            margin="normal"
+            required
+            InputLabelProps={{
+              shrink: true,
+            }}
+            inputProps={{
+              min: getNextDate(),
+            }}
+          />
+          <TextField
+            name="noRooms"
+            label="Number of Rooms"
+            type="number"
+            value={bookingDetails.noRooms}
+            onChange={handleFieldChange}
+            fullWidth
+            margin="normal"
+            required
+            inputProps={{
+              min: 1,
+            }}
+          />
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            style={{ marginTop: "1rem" }}
+          >
+            Book Now
+          </Button>
+        </form>
+        <Dialog
+          open={openDialog}
+          onClose={handleDialogClose}
+          style={{ letterSpacing: "1px" }}
+        >
+          <DialogTitle>Booking Details</DialogTitle>
+          <DialogContent>
+            <p>
+              <strong>Name:</strong> {bookingDetails.name}
+            </p>
+            <p>
+              <strong>Email:</strong> {bookingDetails.email}
+            </p>
+            <p>
+              <strong>Aadhar Number:</strong> {bookingDetails.aadhar}
+            </p>
+            <p>
+              <strong>Phone Number:</strong> {bookingDetails.phone}
+            </p>
+            <p>
+              <strong>Type of Boathouse:</strong> {bookingDetails.boatType}
+            </p>
+            <p>
+              <strong>Date of Booking:</strong> {bookingDetails.date}
+            </p>
+            <p>
+              <strong>Number of Rooms:</strong> {bookingDetails.noRooms}
+            </p>
+            <p>
+              <strong>Total Price:</strong> Rs.{totalPrice}
+            </p>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleDialogClose} color="primary">
+              Close
+            </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => navigate("/user/payment")}
+            >
+              Proceed to Payment
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </div>
+    </div>
+  );
 };
 
 export default BookingForm;

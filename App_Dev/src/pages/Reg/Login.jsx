@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 // import { Link, useNavigate } from 'react-router-dom';
+import Cookies from 'js-cookie'; // Import the js-cookie library
+
 
 import {
   TextField,
@@ -11,11 +13,7 @@ import {
   LinearProgress,
 } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
-import GoogleIcon from '@mui/icons-material/Google';
-// import GoogleIcon from '@mui/icons-material/Google';
 
-// import firebase from './firebase'; 
 
 // SVG background
 const svgBackground = (
@@ -77,7 +75,6 @@ const svgBackground = (
   </div>
 );
 
-
 const theme = createTheme({
   palette: {
     primary: {
@@ -97,33 +94,35 @@ const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
-
+  const [error, setError] = useState(null);
 
 
   const handleLogin = async () => {
     setLoading(true);
     try {
-      await signInWithEmailAndPassword(getAuth(), email, password); 
-      navigate('/home');
+      Cookies.set('email', email);
+      console.log(email);
+      const response = await fetch('http://localhost:8080/users/get/' + email);
+      if (response.ok) {
+        const user = await response.json();
+        if (user.password === password) {
+          navigate('/user/home');
+        } else {
+          setError('Incorrect password');
+        }
+      } else if (response.status === 404) {
+        setError('User not found');
+      } else {
+        setError('An unexpected error occurred');
+      }
     } catch (error) {
       console.error('Error logging in:', error.message);
+      setError('An unexpected error occurred');
     } finally {
       setLoading(false);
     }
   };
-  const handleGoogleSignIn = async () => {
-    setLoading(true);
-    try {
-      const auth = getAuth();
-      const provider = new GoogleAuthProvider();
-      await signInWithPopup(auth, provider);
-      navigate("/home");
-    } catch (error) {
-      console.error("Error signing in with Google:", error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
+  
 
   return (
     <ThemeProvider theme={theme}>

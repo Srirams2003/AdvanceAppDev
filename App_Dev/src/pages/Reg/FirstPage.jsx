@@ -19,7 +19,6 @@ const FirstPage = () => {
     <Grid container style={{ height: '100vh' }}>
       <Grid item xs={6} style={{backgroundColor:'rgb(35, 50, 63)', backgroundImage: `url(${BgImage})`, backgroundSize: 'contain', backgroundRepeat: 'no-repeat', backgroundPosition: 'center' }}>
         <Container style={{ display: 'flex', alignItems: 'center', height: '100%' }}>
-          {/* No need to use BgImage here */}
         </Container>
       </Grid>
       <Grid item xs={6} style={{ backgroundImage: `url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQbEqC544WNEK2ruQdFPOvpwDbo0aSDEWv1Kg&usqp=CAU')`, backgroundSize: 'cover', }}>
