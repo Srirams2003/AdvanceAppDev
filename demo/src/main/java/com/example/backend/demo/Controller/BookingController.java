@@ -28,4 +28,10 @@ public class BookingController {
         List<Booking> bookings = bookingService.getAllBookings();
         return new ResponseEntity<>(bookings, HttpStatus.OK);
     }
+
+    @GetMapping("/get/{email}")
+    public ResponseEntity<List<Booking>> getBookingsByEmail(@PathVariable String email) {
+        List<Booking> bookings = bookingService.getBookingsByEmail(email);
+        return new ResponseEntity<>(bookings, HttpStatus.OK);
+    }
 }

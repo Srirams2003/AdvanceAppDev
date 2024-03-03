@@ -5,7 +5,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import java.util.Date;
 
 @Entity
 @Table(name = "Booking_details")
@@ -36,7 +35,7 @@ public class Booking {
     @Column(name = "no_rooms")
     private Integer noRooms;
 
-    @Column(name = "total_price") // New column for total price
+    @Column(name = "total_price") 
     private Double totalPrice;
 
     // Getters and Setters

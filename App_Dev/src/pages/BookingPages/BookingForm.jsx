@@ -12,6 +12,7 @@ import {
 import BgImage from "../Images/formbg.jpg";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import Cookies from "js-cookie";
 const BASE_URL = "http://localhost:8080";
 const BookingForm = () => {
   const services = [
@@ -30,11 +31,11 @@ const BookingForm = () => {
 
   const [bookingDetails, setBookingDetails] = useState({
     name: "",
-    email: "",
+    email: Cookies.get("email"),
     aadhar: "", // Renamed from aadharNumber
     phone: "", // Renamed from phoneNumber
-    boatType: "", // Renamed from boathouseType
-    date: "", // Renamed from dateOfBooking
+    boatType: Cookies.get("selectedBoat"), // Renamed from boathouseType
+    date: getNextDate, // Renamed from dateOfBooking
     noRooms: 1, // Renamed from numberOfRooms
   });
 
@@ -137,6 +138,7 @@ const BookingForm = () => {
             label="Email"
             type="email"
             value={bookingDetails.email}
+            disabled
             onChange={handleFieldChange}
             fullWidth
             margin="normal"
@@ -166,6 +168,7 @@ const BookingForm = () => {
             name="boatType"
             select
             label="Type of Boathouse"
+            disabled
             value={bookingDetails.boatType}
             onChange={handleFieldChange}
             fullWidth

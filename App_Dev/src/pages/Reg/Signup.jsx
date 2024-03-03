@@ -99,6 +99,12 @@ const SignupPage = () => {
 
 
   const handleSignUp = async () => {
+    const data = {
+      name : name,
+      email : email,
+      password : password,
+    }
+
     if (password !== confirmPassword) {
       setError("Passwords don't match");
       return;
@@ -106,7 +112,8 @@ const SignupPage = () => {
     setLoading(true);
     try {
       const response = await axios.post('http://localhost:8080/users/post', { name, email, password });
-  
+      const resp = await axios.post("http://localhost:2024/products/new",data);
+      console.log(resp);
       if (response.status === 200) {
         setError(response.data.message);
       } else {
@@ -205,7 +212,7 @@ const SignupPage = () => {
           >
             {loading ? 'Signing up...' : 'Sign Up'}
           </Button>
-          <p>Don't have an account? </p>
+          <p>New User? </p>
                 <Link to="/login">
                 <p>Login</p>
               </Link>

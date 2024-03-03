@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { 
     Table, 
     TableBody, 
@@ -8,21 +8,37 @@ import {
     TableRow, 
     Paper, 
     Typography,
+    TextField,
 } from '@mui/material';
 import AdminLayout from './AdminLayout';
+import IconButton from '@mui/material/IconButton';
+import SearchIcon from '@mui/icons-material/Search';
 
 const UserDetails = () => {
-    const [userData, setUserData] = useState([
-        {
-            name: "Sriram",
-            DOB: "November 5, 2003",
-            gender: "Male",
-            email: "sriram@gmail.com",
-            phone: "+918438564691",
-            address: "123 BK Pudhur, London, USA",
-            profilePicture: "ProfileImage"
-        },
-    ]);
+    const [userData, setUserData] = useState([]);
+    const [searchQuery, setSearchQuery] = useState('');
+
+    useEffect(() => {
+        const fetchUserData = async () => {
+            try {
+                const response = await fetch('http://localhost:8080/users/get');
+                if (response.ok) {
+                    const data = await response.json();
+                    setUserData(data);
+                } else {
+                    console.error('Failed to fetch user data');
+                }
+            } catch (error) {
+                console.error('Error fetching user data:', error);
+            }
+        };
+
+        fetchUserData();
+    }, []);
+
+    const filteredUserData = userData.filter(user =>
+        user.email.toLowerCase().includes(searchQuery.toLowerCase())
+    );
 
     return (
         <div style={{backgroundImage: `url('https://thumbs.dreamstime.com/b/simple-white-brick-wall-light-gray-shades-seamless-pattern-surface-texture-background-banner-wide-panorama-format-simple-137027626.jpg')`,minHeight:'100vh'}}>
@@ -30,6 +46,37 @@ const UserDetails = () => {
             <Typography variant="h4" align="center" style={{ marginBottom: '20px', fontWeight: 'bold',marginTop:'35px' }}>
                 Registered Users
             </Typography>
+            <TextField
+    label="Search by Email ID"
+    variant="outlined"
+    value={searchQuery}
+    onChange={(e) => setSearchQuery(e.target.value)}
+    style={{ 
+        marginBottom: '20px', 
+        marginLeft: '30px', 
+        width: '300px',
+        backgroundColor: '#fff', 
+        borderRadius: '14px',
+        boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.4)', 
+        
+    }}
+    InputProps={{
+        endAdornment: (
+            <IconButton>
+                <SearchIcon />
+            </IconButton>
+        ),
+        style: {
+            color: '#333', 
+        },
+    }}
+    InputLabelProps={{
+        style: {
+            color: '#555', 
+        },
+    }}
+/>
+
             <div style={{marginLeft:'30px',marginRight:'50px'}}>
                 <TableContainer component={Paper} style={{paddingLeft:'30px',marginRight:'150px'}}>
                     <Table>
@@ -44,10 +91,10 @@ const UserDetails = () => {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {userData.map((user, index) => (
+                            {filteredUserData.map((user, index) => (
                                 <TableRow key={index}>
                                     <TableCell>{user.name}</TableCell>
-                                    <TableCell>{user.DOB}</TableCell>
+                                    <TableCell>{user.dob}</TableCell>
                                     <TableCell>{user.gender}</TableCell>
                                     <TableCell>{user.email}</TableCell>
                                     <TableCell>{user.phone}</TableCell>

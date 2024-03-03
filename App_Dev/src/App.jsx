@@ -19,6 +19,8 @@ const BookingHistory = React.lazy(() => import('./pages/BookingPages/BookingHist
 const AdminHome = React.lazy(() => import('./pages/AdminPages/AdminHome.jsx'));
 const AdminDashboard = React.lazy(() => import('./pages/AdminPages/AdminDashboard.jsx'));
 const UserDetails = React.lazy(() => import('./pages/AdminPages/UserDeatils.jsx'));
+const AddBoat = React.lazy(() => import('./pages/AdminPages/AddBoat.jsx'));
+const AddButton = React.lazy(() => import('./pages/AdminPages/AddButton.jsx'));
 
 import UserLayout from './pages/CompPages/UserLayout';
 
@@ -39,6 +41,8 @@ const UserRoutes = () => {
     <Route path="/adminhome" element={<Suspense fallback={<div>Loading...</div>}><AdminHome /></Suspense>}/>
     <Route path="/admindashboard" element={<Suspense fallback={<div>Loading...</div>}><AdminDashboard /></Suspense>}/>
     <Route path="/users" element={<Suspense fallback={<div>Loading...</div>}><UserDetails /></Suspense>}/>
+    <Route path="/addboats" element={<Suspense fallback={<div>Loading...</div>}><AddBoat /></Suspense>}/>
+    <Route path="/addbutton" element={<Suspense fallback={<div>Loading...</div>}><AddButton /></Suspense>}/>
     </Routes>
     </UserLayout>
     )
@@ -64,6 +68,8 @@ function App() {
           <Route path="/adminhome" element={<Suspense fallback={<div>Loading...</div>}><AdminHome/></Suspense>} />
           <Route path="/admindashboard" element={<Suspense fallback={<div>Loading...</div>}><AdminDashboard/></Suspense>} />
           <Route path="/users" element={<Suspense fallback={<div>Loading...</div>}><UserDetails/></Suspense>} />
+          <Route path="/addboats" element={<Suspense fallback={<div>Loading...</div>}><AddBoat/></Suspense>} />
+          <Route path="/addbutton" element={<Suspense fallback={<div>Loading...</div>}><AddButton/></Suspense>} />
           <Route path="/user/*" element={<UserRoutes/>}/>
         </Routes>
       </div>

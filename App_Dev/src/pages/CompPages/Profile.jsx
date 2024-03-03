@@ -4,7 +4,6 @@ import EditIcon from "@mui/icons-material/Edit";
 import ProfileImage from '../Images/Prof1.jpg';
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
-import DatePicker from '@mui/lab/DatePicker';
 
 const Profile = () => {
   const cookie = Cookies.get('email');
@@ -51,8 +50,7 @@ const Profile = () => {
         body: JSON.stringify(user),
       });
       if (response.ok) {
-        // Assuming the backend returns the updated user object,
-        // you can update the user state with the response data
+        
         const updatedUser = await response.json();
         setUser(updatedUser);
         setOpenDialog(false);
@@ -69,7 +67,7 @@ const Profile = () => {
   };
 
   if (!user) {
-    return null; // or you can show a loading spinner
+    return null; 
   }
 
   return (
