@@ -1,7 +1,7 @@
-import { Typography } from '@mui/material';
+// import { Typography } from '@mui/material';
 import { VictoryLine, VictoryBar, VictoryPie, VictoryPolarAxis, VictoryChart, VictoryTheme, VictoryAxis } from 'victory';
 import AdminLayout from './AdminLayout';
-import Formbg from '../Images/formbg.jpg'
+// import Formbg from '../Images/formbg.jpg'
 
 
 const AdminDashboard = () => {
