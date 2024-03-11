@@ -15,6 +15,7 @@ const Profile = () => {
   useEffect(() => {
     const fetchUserDetails = async () => {
       try {
+        console.log(cookie);
         const response = await fetch(`http://localhost:8080/users/get/${cookie}`); // Adjust the URL
         if (response.ok) {
           const userData = await response.json();

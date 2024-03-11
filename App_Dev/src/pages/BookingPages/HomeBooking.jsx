@@ -39,6 +39,7 @@ const BookingHome = () => {
     const handleBookNow = (service) => {
         const selectedBoat = service.boatType;
         Cookies.set('selectedBoat', selectedBoat);
+        console.log(selectedBoat)
         navigate('/user/bookingform');
     };
 

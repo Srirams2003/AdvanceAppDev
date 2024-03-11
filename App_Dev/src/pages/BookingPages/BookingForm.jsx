@@ -2,7 +2,6 @@ import { useState } from "react";
 import {
   TextField,
   Button,
-  MenuItem,
   Dialog,
   DialogTitle,
   DialogContent,
@@ -34,7 +33,7 @@ const BookingForm = () => {
     email: Cookies.get("email"),
     aadhar: "", // Renamed from aadharNumber
     phone: "", // Renamed from phoneNumber
-    boatType: Cookies.get("selectedBoat"), // Renamed from boathouseType
+    boatType: Cookies.get("selectedBoat"), 
     date: getNextDate, // Renamed from dateOfBooking
     noRooms: 1, // Renamed from numberOfRooms
   });
@@ -164,23 +163,15 @@ const BookingForm = () => {
             margin="normal"
             required
           />
-          <TextField
-            name="boatType"
-            select
-            label="Type of Boathouse"
-            disabled
-            value={bookingDetails.boatType}
-            onChange={handleFieldChange}
-            fullWidth
-            margin="normal"
-            required
-          >
-            {services.map((service, index) => (
-              <MenuItem key={index} value={service.name}>
-                {service.name}
-              </MenuItem>
-            ))}
-          </TextField>
+          <TextField 
+          disabled
+          name="Type of Boat"
+          label="Type of Boat"
+          value={Cookies.get("selectedBoat")}
+          fullWidth
+          margin="normal"
+          />
+
           <TextField
             name="date"
             label="Date of Booking"

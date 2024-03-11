@@ -95,6 +95,8 @@ const SignupPage = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [roles,setRoles] = useState('');
+
 
 
 
@@ -103,6 +105,7 @@ const SignupPage = () => {
       name : name,
       email : email,
       password : password,
+      roles:'ROLE_USER',
     }
 
     if (password !== confirmPassword) {
@@ -112,7 +115,7 @@ const SignupPage = () => {
     setLoading(true);
     try {
       const response = await axios.post('http://localhost:8080/users/post', { name, email, password });
-      const resp = await axios.post("http://localhost:2024/products/new",data);
+      const resp = await axios.post("http://localhost:8080/products/new",data);
       console.log(resp);
       if (response.status === 200) {
         setError(response.data.message);

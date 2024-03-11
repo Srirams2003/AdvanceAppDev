@@ -1,74 +1,28 @@
-import  { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { AppBar, Toolbar, Typography, Drawer, List, ListItem, ListItemIcon, ListItemText, IconButton, CssBaseline, Divider } from '@mui/material';
-import { Menu as MenuIcon, Dashboard as DashboardIcon, Person as PersonIcon, Settings as SettingsIcon } from '@mui/icons-material';
-import HomeIcon from '@mui/icons-material/Home';
+// import React from 'react';
+import propTypes from 'prop-types';
+import AdminSidebar from './AdminSideBar';
 
-function AdminLayout({ children }) {
-  const [open, setOpen] = useState(false);
-
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
-
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
-
+const AdminLayout = ({ children }) => {
   return (
     <div>
-      <CssBaseline />
-      <AppBar position="fixed">
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="start"
-            onClick={handleDrawerOpen}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" noWrap style={{ marginLeft: '38%', fontWeight: 'bolder', fontSize: '25px' }}>
-            Admin Dashboard
-          </Typography>
-        </Toolbar>
-      </AppBar>
-      <Drawer
-        variant="temporary"
-        anchor="left"
-        open={open}
-        onClose={handleDrawerClose}
-        ModalProps={{
-          keepMounted: true,
-        }}
-        sx={{
-          '& .MuiDrawer-paper': {
-            width: 240,
-            boxSizing: 'border-box',
-          },
-        }}
-      >
-        <Toolbar />
-        <Divider />
-        <List>
-          {[
-            { text: 'Home', icon: <HomeIcon />, link: '/adminhome' },
-            { text: 'Dashboard', icon: <DashboardIcon />, link: '/admindashboard' },
-            { text: 'Users', icon: <PersonIcon />, link: '/users' },
-          ].map((item) => (
-            <ListItem button key={item.text} component={Link} to={item.link}>
-              <ListItemIcon>{item.icon}</ListItemIcon>
-              <ListItemText primary={item.text} />
-            </ListItem>
-          ))}
-        </List>
-      </Drawer>
-      <div style={{ marginLeft: open ? 240 : 0 }}>
-        <Toolbar />
-        {children}
+      
+      <div className="container-fluid">
+        <div className="row">
+          <aside className="col-md-3 col-lg-2">
+            <AdminSidebar />
+          </aside>
+          <main role="main" className="col-md-9 ml-sm-auto col-lg-10 px-4">
+            {children}
+          </main>
+        </div>
       </div>
+      
     </div>
   );
-}
+};
+
+AdminLayout.propTypes = {
+  children: propTypes.node.isRequired,
+};
 
 export default AdminLayout;

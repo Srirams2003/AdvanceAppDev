@@ -16,7 +16,7 @@ import {
 import { InfoOutlined, Add, Delete } from "@mui/icons-material";
 // import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import AdminLayout from "./AdminLayout";
+import AdminSideBar from "./AdminSideBar";
 
 const api = axios.create({
   baseURL: "http://localhost:8080",
@@ -108,7 +108,7 @@ const AddBoat = () => {
 
   return (
     <div>
-      <AdminLayout />
+      <AdminSideBar />
       <Paper elevation={3} style={{ padding: "20px", margin: "20px" }}>
         <Button
           variant="contained"

@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-// import { Link, useNavigate } from 'react-router-dom';
-import Cookies from 'js-cookie'; // Import the js-cookie library
-
+import axios from 'axios';
+import Cookies from 'js-cookie';
 
 import {
   TextField,
@@ -13,7 +12,6 @@ import {
   LinearProgress,
 } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-
 
 // SVG background
 const svgBackground = (
@@ -75,6 +73,7 @@ const svgBackground = (
   </div>
 );
 
+
 const theme = createTheme({
   palette: {
     primary: {
@@ -91,33 +90,35 @@ const theme = createTheme({
 
 const LoginPage = () => {
   const navigate = useNavigate();
+  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
+  const [roles,setRoles] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-
   const handleLogin = async () => {
     setLoading(true);
     try {
-      Cookies.set('email', email);
-      console.log(email);
-      const response = await fetch('http://localhost:8080/users/get/' + email);
-      if (response.ok) {
-        const user = await response.json();
-        if (user.password === password) {
-          navigate('/user/home');
-        } else {
-          setError('Incorrect password');
+      Cookies.set("email",email);
+      const response = await axios.post(
+        "http://localhost:8080/products/authenticate",
+        {
+          username: username,
+          password: password,
+          roles:'ROLE_USER',
         }
-      } else if (response.status === 404) {
-        setError('User not found');
-      } else {
-        setError('An unexpected error occurred');
-      }
+      );
+  
+      sessionStorage.setItem("token", response.data);
+      sessionStorage.setItem("tokenExpiration", Date.now() + 86400000);
+      sessionStorage.setItem("isLoggedIn", "true");
+  
+      navigate("/user/home");
+      console.log("Successful")
     } catch (error) {
-      console.error('Error logging in:', error.message);
-      setError('An unexpected error occurred');
+      console.error("Error:", error);
+      setError("Invalid email or password");
     } finally {
       setLoading(false);
     }
@@ -128,79 +129,84 @@ const LoginPage = () => {
     <ThemeProvider theme={theme}>
       {svgBackground}
       <Box
-  sx={{
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: '100vh',
-    position: 'relative',
-  }}
->
-  <Box
-    sx={{
-      boxShadow: '0px 0px 20px rgba(0, 0, 0, 0.2)', 
-      padding: '20px',
-    }}
-  >
-    
-    <Paper
-      sx={{
-        width: '350px',
-        height: '400px',
-        backgroundColor: 'rgba(255, 255, 255, 0.8)',
-        position: 'relative',
-        zIndex: 2,
-        padding: '25px',
-        boxShadow: '0px 0px 20px rgba(0, 0, 0, 0.2)', 
-        borderRadius:'15px',
-      }}
-    >
-     
-      <Typography variant="h4" align="center" sx={{ marginBottom: '16px' }}>
-        Login
-      </Typography>
-      <form>
-        <Box sx={{ display: 'flex', flexDirection: 'column', gap: '25px' }}>
-          <TextField
-            label="Email"
-            id="username"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            variant="outlined"
-            required
-          />
-          <TextField
-            label="Password"
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            variant="outlined"
-            type="password"
-            required
-          />
-          <Button
-            type="button"
-            variant="contained"
-            color="primary"
-            onClick={handleLogin}
-            disabled={loading || !email || !password}
-            sx={{ marginTop: '16px' }}
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '100vh',
+          position: 'relative',
+        }}
+      >
+        <Box
+          sx={{
+            boxShadow: '0px 0px 20px rgba(0, 0, 0, 0.2)',
+            padding: '20px',
+          }}
+        >
+          <Paper
+            sx={{
+              width: '350px',
+              height: '400px',
+              backgroundColor: 'rgba(255, 255, 255, 0.8)',
+              position: 'relative',
+              zIndex: 2,
+              padding: '25px',
+              boxShadow: '0px 0px 20px rgba(0, 0, 0, 0.2)',
+              borderRadius: '15px',
+            }}
           >
-            {loading ? 'Logging in...' : 'Login'}
-          </Button>
-          
-                <p>Don't have an account? </p>
-                <Link to="/signup">
-                <p>Signup</p>
-              </Link>
+            <Typography variant="h4" align="center" sx={{ marginBottom: '16px' }}>
+              Login
+            </Typography>
+            <form>
+              <Box sx={{ display: 'flex', flexDirection: 'column', gap: '25px' }}>
+              <TextField
+            label="User Name"
+            id="name"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            variant="outlined"
+            required
+          />
+                <TextField
+                  label="Email"
+                  id="username"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  variant="outlined"
+                  required
+                />
+                <TextField
+                  label="Password"
+                  id="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  variant="outlined"
+                  type="password"
+                  required
+                />
+                <Button
+                  type="button"
+                  variant="contained"
+                  color="primary"
+                  onClick={handleLogin}
+                  disabled={loading || !email || !password}
+                  sx={{ marginTop: '16px' }}
+                >
+                  {loading ? 'Logging in...' : 'Login'}
+                </Button>
+                <p>New User? <Link to="/signup">Signup</Link></p>
+              </Box>
+            </form>
+            {loading && <LinearProgress sx={{ marginTop: '16px' }} />}
+            {error && (
+              <Typography variant="body2" color="error" align="center" sx={{ marginTop: '16px' }}>
+                {error}
+              </Typography>
+            )}
+          </Paper>
         </Box>
-      </form>
-      {loading && <LinearProgress sx={{ marginTop: '16px' }} />}
-    </Paper>
-    
-  </Box>
       </Box>
-
     </ThemeProvider>
   );
 };
