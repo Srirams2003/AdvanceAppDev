@@ -10,7 +10,7 @@ import {
     Typography,
     TextField,
 } from '@mui/material';
-import AdminSideBar from './AdminSidebar';
+import AdminSideBar from './AdminSideBar';
 import IconButton from '@mui/material/IconButton';
 import SearchIcon from '@mui/icons-material/Search';
 
@@ -42,8 +42,8 @@ const UserDetails = () => {
 
     return (
         <div style={{backgroundImage: `url('https://thumbs.dreamstime.com/b/simple-white-brick-wall-light-gray-shades-seamless-pattern-surface-texture-background-banner-wide-panorama-format-simple-137027626.jpg')`,minHeight:'100vh'}}>
-            <AdminSideBar/>
-            <Typography variant="h4" align="center" style={{ marginBottom: '20px', fontWeight: 'bold',marginTop:'35px' }}>
+        <AdminSideBar/>    
+        <Typography variant="h4" align="center" style={{ marginBottom: '20px', fontWeight: 'bold',marginTop:'35px' }}>
                 Registered Users
             </Typography>
             <TextField

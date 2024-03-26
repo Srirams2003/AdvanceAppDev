@@ -21,6 +21,7 @@ const AdminDashboard = React.lazy(() => import('./pages/AdminPages/AdminDashboar
 const UserDetails = React.lazy(() => import('./pages/AdminPages/UserDeatils.jsx'));
 const AddBoat = React.lazy(() => import('./pages/AdminPages/AddBoat.jsx'));
 const AddButton = React.lazy(() => import('./pages/AdminPages/AddButton.jsx'));
+const AdminSideBar = React.lazy(() => import('./pages/AdminPages/AdminSideBar.jsx'));
 
 import UserLayout from './pages/CompPages/UserLayout';
 
@@ -43,6 +44,7 @@ const UserRoutes = () => {
     <Route path="/users" element={<Suspense fallback={<div>Loading...</div>}><UserDetails /></Suspense>}/>
     <Route path="/addboats" element={<Suspense fallback={<div>Loading...</div>}><AddBoat /></Suspense>}/>
     <Route path="/addbutton" element={<Suspense fallback={<div>Loading...</div>}><AddButton /></Suspense>}/>
+    <Route path="/side" element={<Suspense fallback={<div>Loading...</div>}><AdminSideBar /></Suspense>}/>
     </Routes>
     </UserLayout>
     )
@@ -70,6 +72,7 @@ function App() {
           <Route path="/users" element={<Suspense fallback={<div>Loading...</div>}><UserDetails/></Suspense>} />
           <Route path="/addboats" element={<Suspense fallback={<div>Loading...</div>}><AddBoat/></Suspense>} />
           <Route path="/addbutton" element={<Suspense fallback={<div>Loading...</div>}><AddButton/></Suspense>} />
+          <Route path="/side" element={<Suspense fallback={<div>Loading...</div>}><AdminSideBar/></Suspense>} />
           <Route path="/user/*" element={<UserRoutes/>}/>
         </Routes>
       </div>
